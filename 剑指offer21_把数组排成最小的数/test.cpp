@@ -27,9 +27,72 @@ public:
 	}
 };
 
+class Solution1 {
+public:
+	string PrintMinNumber(vector<int> numbers) {
+		string res;
+		// check param
+		if (numbers.empty())
+			return res;
+		int Size = numbers.size();
+		vector<string> nums(Size);
+		for (int i = 0; i<Size; ++i){
+			int n = numbers[i];
+			while (n / 10){
+				char p = n % 10 + '0';
+				nums[i].push_back(p);
+				n /= 10;
+			}
+			char h = n % 10 + '0';
+			nums[i].push_back(h);
+			reverse(nums[i].begin(), nums[i].end());
+		}
+		// get longest num size
+		int max = INT_MIN;
+		for (int i = 0; i<Size; ++i){
+			int tmp = nums[i].size();
+			if (max<tmp)
+				max = tmp;
+		}
+
+		// sort
+		vector<vector<string>> R(10);
+		for (int j = 0; j<max; ++j){
+			for (int i = 0; i<Size; ++i){
+				// in 
+				if (nums[i].size()<j + 1){
+					char tmp = nums[i].back() - '0';
+					R[tmp].push_back(nums[i]);
+					continue;
+				}
+				int indx = nums[i][j] - '0';
+				R[indx].push_back(nums[i]);
+
+			}
+			//out
+			nums.clear();
+			for (int k = 0; k<10; ++k){
+				int length = R[k].size();
+				for (int m = 0; m<length; ++m){
+					nums.push_back(R[k][m]);
+					// clear R
+					R[k][m].clear();
+				}
+				R[k].clear();
+			}
+		}
+
+		// return 
+		for (int i = 0; i<Size; ++i){
+			res.insert(res.end(), nums[i].begin(), nums[i].end());
+		}
+		return res;
+	}
+};
+
 void TestFunc(){
 	vector<int> array = {2,23,212};
-	Solution s;
+	Solution1 s;
 	string temp;
 	temp = s.PrintMinNumber(array);
 	cout << temp << endl;
