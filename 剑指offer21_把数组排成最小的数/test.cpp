@@ -28,7 +28,7 @@ public:
 };
 
 void TestFunc(){
-	vector<int> array = {3,32,321};
+	vector<int> array = {2,23,212};
 	Solution s;
 	string temp;
 	temp = s.PrintMinNumber(array);
